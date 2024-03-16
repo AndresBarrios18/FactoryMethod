@@ -5,6 +5,7 @@
 
 package com.mycompany.crud;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 /**
  *
  * @author pipe2
@@ -43,37 +44,16 @@ public class Main {
     }
 
     private static void createUser(UserDAO userDAO) {
-        Scanner scanner = new Scanner(System.in);
+      Scanner scanner = new Scanner(System.in);
 
-    System.out.println("Seleccione el método de almacenamiento:");
-    System.out.println("L. Almacenamiento local");
-    System.out.println("D. Almacenamiento en base de datos");
+        System.out.println("Ingrese el ID del usuario:");
+        int id = scanner.nextInt();
+        System.out.println("Ingrese el nombre del usuario:");
+        String name = scanner.next();
 
-    char storageOption = scanner.next().charAt(0);
-    Storage storage;
-
-    switch (storageOption) {
-        case 'L':
-            storage = new LocalStorage();
-            break;
-        case 'D':
-     
-            Connection connection = MySqlConnection.getConnection();
-            storage = new DatabaseStorage(connection);
-            break;
-        default:
-            System.out.println("Opción de almacenamiento no válida.");
-            return;
-    }
-
-    System.out.println("Ingrese el ID del usuario:");
-    int id = scanner.nextInt();
-    System.out.println("Ingrese el nombre del usuario:");
-    String name = scanner.next();
-
-    User newUser = new User(id, name);
-    userDAO.create(newUser, storage);
-    System.out.println("Usuario creado exitosamente.");
+        User newUser = new User(id, name);
+        userDAO.create(newUser);
+        System.out.println("Usuario creado exitosamente.");
     }
 
     private static void readUser(UserDAO userDAO) {

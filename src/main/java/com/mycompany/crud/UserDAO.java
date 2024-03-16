@@ -19,8 +19,7 @@ public class UserDAO implements CRUD<User> {
     private Connection connection;
 
     private UserDAO() {
-        // Aquí deberías inicializar la conexión a la base de datos
-        // Esto es solo un ejemplo, deberías proporcionar tus propios detalles de conexión
+     
         connection = MySqlConnection.getConnection();
     }
 
@@ -32,15 +31,17 @@ public class UserDAO implements CRUD<User> {
     }
 
     @Override
-    public void create(User user, Storage storage) {
+    public void create(User user) {
         
-        if (storage == null) {
-            System.out.println("No se proporcionó un objeto Storage válido.");
-            return;
+         try {
+            String query = "INSERT INTO users (id, name) VALUES (?, ?)";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, user.getId());
+            statement.setString(2, user.getName());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        
-       
-        storage.saveUser(user);
     }
 
     @Override
